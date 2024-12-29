@@ -72,6 +72,9 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
+# Resources 폴더의 특정 파일 제외
+Assets/Resources/secureData.json
+
 # 숨겨야 할 개인 파일
 *.key
 *.keystore
