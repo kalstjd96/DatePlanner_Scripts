@@ -1,2 +1,31 @@
-# DatePlanner
-지역별, 장르별, 또는 일정에 따른 축제를 기반으로 최적의 데이트 코스를 추천하는 앱. 뿐만 아니라 나만의 데이트 코스 일정을 공유하고, 서로의 인사이트를 나눌 수 있도록 도와주는 앱
+# 📅 DatePlanner - Smart Date Course Planning App
+
+**DatePlanner**는 지역별, 장르별, 또는 일정에 따른 축제를 기반으로 최적의 데이트 코스를 추천하는 앱. 뿐만 아니라 나만의 데이트 코스 일정을 공유하고, 서로의 인사이트를 나눌 수 있도록 도와주는 앱
+데이트 코스 추천과 공유를 통해 누구나 멋진 시간을 계획할 수 있습니다!
+
+---
+
+## 📸 Screenshots  
+![Intro Scene](./images/intro_scene.png)  
+![Main Scene](./images/main_scene.png)  
+
+---
+
+## ✨ 주요 기능 (Features)  
+- 📍 **맞춤형 데이트 코스 추천**: 지역, 장르, 일정에 따른 코스 제안  
+- 👥 **소셜 기능**: 사용자가 데이트 일정을 공유하고 서로 피드백을 주고받을 수 있음  
+- 🔔 **알림 설정**: 중요한 일정에 대한 알림 기능 제공  
+- 🔄 **비즈니스 로직과 외부 API 통합**: GPT API를 활용해 맞춤형 코스 생성  
+
+---
+
+## 🚀 설치 및 실행 방법 (Installation)  
+1. 저장소를 클론합니다:
+   ```bash
+   git clone https://github.com/yourusername/DatePlanner.git
+
+
+---
+
+## 📅 업데이트 로그 (Changelog)
+v0.0.1 (2024-10-30): Intro Scene 및 Main Scene 기본 구현 완료, Firebase API와의 통신 기능 테스트 성공
