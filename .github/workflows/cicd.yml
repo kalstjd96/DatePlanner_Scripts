@@ -1,0 +1,40 @@
+name: Unity CI Pipeline
+
+# main 브랜치에 push 또는 pull_request 발생 시 트리거
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest  # Windows 환경에서 실행
+
+    steps:
+      # 1. 저장소 체크아웃
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # 2. Unity 캐시 설정 (빌드 속도 향상용, 옵션입니다)
+      - name: Cache Unity Library
+        uses: actions/cache@v2
+        with:
+          # Library 폴더는 Unity가 생성하는 임시 파일들을 포함합니다.
+          path: Library
+          key: ${{ runner.os }}-unity-${{ hashFiles('ProjectSettings/ProjectVersion.txt') }}
+
+      # 3. Unity 프로젝트 빌드
+      - name: Build Unity project
+        uses: game-ci/unity-builder@v2
+        with:
+          targetPlatform: StandaloneWindows64
+          # 필요에 따라 Unity 버전을 명시할 수 있습니다.
+          # unityVersion: 2021.3.0f1
+
+      # 4. Unity 테스트 실행 (Edit 모드 테스트나 Play 모드 테스트 모두 가능)
+      - name: Run Unity tests
+        uses: game-ci/unity-test-runner@v2
+        with:
+          # testMode는 'playmode' 또는 'editmode' 중 선택합니다.
+          testMode: playmode
