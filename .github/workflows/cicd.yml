@@ -13,18 +13,18 @@ jobs:
     steps:
       # 1. 저장소 체크아웃
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # 2. Unity 캐시 설정 (빌드 속도 향상)
       - name: Cache Unity Library
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: Library
           key: ${{ runner.os }}-unity-${{ hashFiles('ProjectSettings/ProjectVersion.txt') }}
 
       # 3. Unity Android 빌드
       - name: Build Unity project for Android
-        uses: game-ci/unity-builder@v2
+        uses: game-ci/unity-builder@v3
         with:
           unityVersion: 2022.3.37f1  # Unity 버전 명시
           targetPlatform: Android
@@ -37,14 +37,14 @@ jobs:
 
       # 4. 빌드 결과물 업로드 (APK 또는 AAB)
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Android-Build
           path: build/Android/*.apk  # 또는 .aab 사용 가능
 
       # 5. Unity 테스트 실행 (Play 모드 테스트)
       - name: Run Unity Tests
-        uses: game-ci/unity-test-runner@v2
+        uses: game-ci/unity-test-runner@v4
         with:
           unityVersion: 2022.3.37f1
           testMode: playmode
