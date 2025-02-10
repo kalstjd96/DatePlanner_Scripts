@@ -1,6 +1,5 @@
-name: Unity CI Pipeline
+name: Unity Android CI Pipeline
 
-# main 브랜치에 push 또는 pull_request 발생 시 트리거
 on:
   push:
     branches: [ main ]
@@ -9,32 +8,43 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest  # Windows 환경에서 실행
+    runs-on: ubuntu-latest  # Unity의 안드로이드 빌드는 Linux 환경이 더 안정적임
 
     steps:
       # 1. 저장소 체크아웃
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # 2. Unity 캐시 설정 (빌드 속도 향상용, 옵션입니다)
+      # 2. Unity 캐시 설정 (빌드 속도 향상)
       - name: Cache Unity Library
         uses: actions/cache@v2
         with:
-          # Library 폴더는 Unity가 생성하는 임시 파일들을 포함합니다.
           path: Library
           key: ${{ runner.os }}-unity-${{ hashFiles('ProjectSettings/ProjectVersion.txt') }}
 
-      # 3. Unity 프로젝트 빌드
-      - name: Build Unity project
+      # 3. Unity Android 빌드
+      - name: Build Unity project for Android
         uses: game-ci/unity-builder@v2
         with:
-          targetPlatform: StandaloneWindows64
-          # 필요에 따라 Unity 버전을 명시할 수 있습니다.
-          # unityVersion: 2021.3.0f1
+          unityVersion: 2022.3.37f1  # Unity 버전 명시
+          targetPlatform: Android
+          androidExportType: androidPackage  # 'androidPackage'를 사용하면 .apk 또는 .aab 생성
+          androidKeystoreName: dateBook.keystore
+          androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+          androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
+          androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
 
-      # 4. Unity 테스트 실행 (Edit 모드 테스트나 Play 모드 테스트 모두 가능)
-      - name: Run Unity tests
+      # 4. 빌드 결과물 업로드 (APK 또는 AAB)
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Android-Build
+          path: build/Android/*.apk  # 또는 .aab 사용 가능
+
+      # 5. Unity 테스트 실행 (Play 모드 테스트)
+      - name: Run Unity Tests
         uses: game-ci/unity-test-runner@v2
         with:
-          # testMode는 'playmode' 또는 'editmode' 중 선택합니다.
+          unityVersion: 2022.3.37f1
           testMode: playmode
