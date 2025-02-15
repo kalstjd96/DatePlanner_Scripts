@@ -24,9 +24,11 @@ jobs:
 
       # 3. Unity Android 빌드
       - name: Build Unity project for Android
-        uses: game-ci/unity-builder@v3
+        uses: game-ci/unity-builder@v4
+        env:
+    		UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          unityVersion: 2022.3.37f1  # Unity 버전 명시
+          unityVersion: 2022.3.37f1
           targetPlatform: Android
           androidExportType: androidPackage  # 'androidPackage'를 사용하면 .apk 또는 .aab 생성
           androidKeystoreName: dateBook.keystore
