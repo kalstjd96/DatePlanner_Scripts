@@ -4,5 +4,5 @@ using UnityEngine;
 
 public static class DetailPageData
 {
-    public static DateCourse SelectedCourse;
+    public static DateCourseModel SelectedCourse;
 }

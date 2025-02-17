@@ -1,149 +1,71 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using DateApp.Platform.Intro;
-using Firebase;
 using Firebase.Auth;
-using Firebase.Extensions;
-using Google;
+using Firebase.Database;
+using Firebase.Utility;
 using Main.User;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class FirebaseManager : MonoBehaviour
+namespace Firebase
 {
-    //private GoogleSignInConfiguration configuration;
-    //Firebase.DependencyStatus dependencyStatus = Firebase.DependencyStatus.UnavailableOther;
-    Firebase.Auth.FirebaseAuth auth;
-    Firebase.Auth.FirebaseUser user;
-
-    [SerializeField]
-    private TextMeshProUGUI errorMsg;
-    [SerializeField]
-    private Button googleLoginButton;
-    private readonly SceneDefine.SceneName Main;
-    private string googleClientID;
-
-    //public TextMeshProUGUI Username, UserEmail;
-
-    private void Awake()
+    /// <summary>
+    ///  Firebase를 사용하는 상위 관리자 클래스
+    /// </summary>
+    public class FirebaseManager : MonoBehaviour
     {
-        googleLoginButton.onClick.AddListener(GoogleSignInClick);
-        googleClientID = GetFirebaseInfo();
-        InitFirebase();
-    }
+        private FirebaseAuthManager _authManager;
+        private FirebaseDatabaseManager _databaseManager;
 
-    string GetFirebaseInfo()
-    {
-        // Resources 폴더에서 securedata.json 파일 로드
-        TextAsset jsonFile = Resources.Load<TextAsset>("secureData");
-        if (jsonFile == null)
+        [SerializeField] private TextMeshProUGUI errorMsg;
+        [SerializeField] private Button googleLoginButton;
+        private string _googleClientID;
+    
+        private void Awake()
         {
-            Debug.LogError("securedata.json not found in Resources folder!");
-            return null;
+            _googleClientID = FirebaseConfigLoader.LoadGoogleClientID();
+            FirebaseInitializer.InitializeFirebase(OnFirebaseInitialized);
         }
 
-        // JSON 파싱 및 데이터 반환
-        SecureData config = JsonUtility.FromJson<SecureData>(jsonFile.text);
-        if (config != null)
+        private void OnFirebaseInitialized(DependencyStatus status)
         {
-            return config.googleClientID;
-        }
-        else
-        {
-            Debug.LogError("Failed to parse securedata.json!");
-            return null;
-        }
-    }
-
-
-    void InitFirebase()
-    {
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
-            if (task.Result == DependencyStatus.Available)
+            if (status == DependencyStatus.Available)
             {
-                auth = FirebaseAuth.DefaultInstance;
-                Debug.Log("Firebase Auth initialized successfully.");
+                Debug.Log("Firebase initialized successfully.");
+
+                _authManager = new FirebaseAuthManager(_googleClientID);
+                _databaseManager = new FirebaseDatabaseManager();
+
+                googleLoginButton.onClick.AddListener(OnGoogleSignInClicked);
             }
             else
             {
-                Debug.LogError("Could not resolve Firebase dependencies: " + task.Result);
+                Debug.LogError($"Could not initialize Firebase: {status}");
             }
-        });
-    }
-
-    public void GoogleSignInClick()
-    {
-        try
-        {
-            GoogleSignIn.Configuration = new GoogleSignInConfiguration
-            {
-                WebClientId = googleClientID,
-                RequestIdToken = true,
-                UseGameSignIn = false,
-                RequestEmail = true
-            };
-
-            GoogleSignIn.DefaultInstance.SignIn().ContinueWith(task =>
-            {
-                if (task.IsFaulted)
-                {
-                    errorMsg.text = "SignIn Error: " + task.Exception;
-                }
-                else if (task.IsCanceled)
-                {
-                    errorMsg.text = "SignIn Canceled: ";
-                }
-                else
-                {
-                    OnGoogleAuthenticatedFinished(task);
-                }
-            });
         }
-        catch (Exception ex)
-        {
-            errorMsg.text = "GoogleSignInClick Exception: " + ex.Message;
-        }
-    }
 
-    void OnGoogleAuthenticatedFinished(Task<GoogleSignInUser> task)
-    {
-        if (task.IsFaulted)
+        private void OnGoogleSignInClicked()
         {
-            Debug.LogError("Faulted");
-        }
-        else if (task.IsCanceled)
-        {
-            Debug.LogError("Cancelled");
-        }
-        else
-        {
-            Firebase.Auth.Credential credential = Firebase.Auth.GoogleAuthProvider.GetCredential(task.Result.IdToken, null);
-
-            auth.SignInWithCredentialAsync(credential).ContinueWithOnMainThread(task => 
-            {
-                if (task.IsCanceled)
+            _ = _authManager.SignInWithGoogleAsync(
+                onError: error =>
                 {
-                    return;
-                }
-
-                if (task.IsFaulted)
+                    errorMsg.text = error;
+                    Debug.LogError(error);
+                },
+                onSuccess: user =>
                 {
-                    Debug.LogError("SignInWithCredentialAsync encountered an error: " + task.Exception);
-                    return;
-                }
+                    Debug.Log($"User signed in: {user.Email}");
+                    UserData.SetUserInfo(user.Email);
 
-                user = auth.CurrentUser;
-                UserData.SetUserInfo(user.Email);
-                
-                if (SceneDefine.SceneNames.TryGetValue(Main, out string sceneName))
-                    SceneManager.LoadScene(sceneName);
-                else
-                    Debug.LogError("지정한 씬이 없습니다.");
-                // StartCoroutine(LoadImage(CheckImageUrl(user.PhotoUrl.ToString())));
-            });
+                    // Scene 이동
+                    SceneDefine.SceneNames.TryGetValue(SceneDefine.SceneName.Main, out string sceneName);
+                    if (!string.IsNullOrEmpty(sceneName))
+                        SceneManager.LoadScene(sceneName);
+                    else
+                        Debug.LogError("지정한 씬이 없습니다.");
+                }
+            );
         }
     }
 }
