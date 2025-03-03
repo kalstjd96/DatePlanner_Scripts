@@ -6,9 +6,7 @@
 ---
 
 ## 📸 Screenshots  
-![Intro Scene](./images/intro_scene.png)  
-![Main Scene](./images/main_scene.png)  
-
+[진행중]
 ---
 
 ## ✨ 주요 기능 (Features)  
@@ -20,12 +18,11 @@
 ---
 
 ## 🚀 설치 및 실행 방법 (Installation)  
-1. 저장소를 클론합니다:
-   ```bash
-   git clone https://github.com/yourusername/DatePlanner.git
-
+[진행중]
 
 ---
 
 ## 📅 업데이트 로그 (Changelog)
-v0.0.1 (2024-10-30): Intro Scene 및 Main Scene 기본 구현 완료, Firebase API와의 통신 기능 테스트 성공
+v0.0.1 (2025-02-20): Intro Scene 및 Main Scene 기본 구현 완료, Firebase API와의 통신 기능 테스트 성공
+v0.0.2 (2025-03-06): Detail Scene 기본 구현 완료, Google Cloude를 통한 STT 기능 적용 예정
+
