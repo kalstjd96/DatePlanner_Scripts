@@ -18,10 +18,10 @@ namespace DateApp.Platform.Define
         public static readonly Dictionary<SceneName, string> SceneNames = new Dictionary<SceneName, string>
     {
         { SceneName.Intro, "0_Intro" },
-        { SceneName.Main, "1_Main" },
-        { SceneName.Login, "Login" },
-        { SceneName.Detail, "Detail" },
-        { SceneName.Settings, "3_Settings" }
+        { SceneName.Login, "1_Login" },
+        { SceneName.Main, "2_Main" },
+        { SceneName.Detail, "3_Detail" },
+        { SceneName.Settings, "4_Settings" }
     };
     }
 }

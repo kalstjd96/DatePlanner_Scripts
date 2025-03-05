@@ -63,6 +63,22 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /Aa]ssets/[Ss]treamingAssets/aa/*
 
+# 🔹 추가: UI 및 리소스 관련 폴더 제외
+Assets/UI/
+Assets/Editor Default Resources/
+Assets/ExternalDependencyManager/
+Assets/Firebase/
+Assets/GeneratedLocalRepo/
+Assets/GoogleSignIn/
+Assets/Prefabs/
+Assets/Resources/
+Assets/Scenes/
+Assets/Settings/
+Assets/StreamingAssets/
+Assets/TextMesh Pro/
+Assets/Model/
+Assets/ThirdParty/
+
 # 🔹 추가: 개인 및 보안 정보 제외
 *.key
 *.keystore
@@ -70,3 +86,6 @@ google-services.json
 google-services.plist
 Assets/Resources/secureData.json
 
+# 🔹 유지할 파일 및 폴더 (포트폴리오 용도)
+!Assets/Scripts/
+!README.md
