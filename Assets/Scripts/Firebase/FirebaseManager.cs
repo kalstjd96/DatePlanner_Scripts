@@ -47,11 +47,20 @@ namespace Firebase
 
         private void OnGoogleSignInClicked()
         {
+#if UNITY_EDITOR
+            Debug.LogWarning("Google 로그인은 에디터에서 실행할 수 없습니다. 모바일 환경에서 테스트하세요.");
+            errorMsg.text = "Google 로그인은 모바일에서만 가능합니다.";
+#endif
+
             _ = _authManager.SignInWithGoogleAsync(
                 onError: error =>
                 {
                     errorMsg.text = error;
                     Debug.LogError(error);
+
+                    SceneDefine.SceneNames.TryGetValue(SceneDefine.SceneName.Main, out string sceneName);
+                    if (!string.IsNullOrEmpty(sceneName))
+                        SceneManager.LoadScene(sceneName);
                 },
                 onSuccess: user =>
                 {
