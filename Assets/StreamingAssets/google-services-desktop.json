@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "778839936886",
+    "firebase_url": "https://datebook-cabcc-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "datebook-cabcc",
+    "storage_bucket": "datebook-cabcc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:778839936886:android:4e2c167def9149c6c7b457",
+        "android_client_info": {
+          "package_name": "com.MSK.DateBook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "778839936886-1hqp4thdh5nb8e2730g94ad6o2tj7f5k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.MSK.DateBook",
+            "certificate_hash": "e868adc16c6bbc1718fb52534fd84b0974db256a"
+          }
+        },
+        {
+          "client_id": "778839936886-iomea67uq05j4j0k22a7ol7gm7s7odg8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUndcIEIDWLFZyxrONF3vE-ScewIuTtd0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "778839936886-iomea67uq05j4j0k22a7ol7gm7s7odg8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
