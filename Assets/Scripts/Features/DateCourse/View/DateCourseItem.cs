@@ -10,7 +10,6 @@ public class DateCourseItem : MonoBehaviour
     [NonSerialized]
     public string CourseId;
     public TextMeshProUGUI Title;
-    public TextMeshProUGUI Description;
     public TextMeshProUGUI Duration;
     public TextMeshProUGUI Budget;
     public TextMeshProUGUI Rating;
@@ -20,6 +19,7 @@ public class DateCourseItem : MonoBehaviour
     public Button LikeButton;
     public bool IsLikedByUser;
 
+    private string description;
     private Button detailButton;
     private DateCourseViewModel viewModel;
     private SceneDefine.SceneName detailScene;
@@ -56,7 +56,7 @@ public class DateCourseItem : MonoBehaviour
         if (viewModel == null) return;
 
         Title.text = viewModel.Title;
-        Description.text = viewModel.Description;
+        description = viewModel.Description;
         LikesCount.text = viewModel.LikesCount.ToString();
         LikeImage.color = viewModel.IsLikedByUser ? Color.red : Color.gray;
     }
